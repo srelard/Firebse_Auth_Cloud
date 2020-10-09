@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "268312143192",
+    "firebase_url": "https://flutter-places-backend.firebaseio.com",
+    "project_id": "flutter-places-backend",
+    "storage_bucket": "flutter-places-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268312143192:android:c4d542091f9d9df96c712d",
+        "android_client_info": {
+          "package_name": "com.example.firebase_backend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268312143192-s2jl46f28ftk53nrnpnguboq3p3k8u6u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfx4kjnOSO8BzOuJuDF5Yq2M7piGK2bHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268312143192-s2jl46f28ftk53nrnpnguboq3p3k8u6u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "268312143192-4l87vn1darul7vhg9em6p8fnmcli4cl3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebaseBackend"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
