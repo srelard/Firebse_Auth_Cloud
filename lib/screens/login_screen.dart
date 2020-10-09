@@ -1,6 +1,7 @@
 import 'package:firebase_backend/screens/signup_screen.dart';
 import 'package:firebase_backend/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = "login_screen";
@@ -73,10 +74,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 250,
                         child: FlatButton(
                             onPressed: _submit,
-                            child: Text("Login",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(Icons.email),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text("Login with Mail",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18)),
+                              ],
+                            ),
                             color: Colors.blue),
+                        padding: EdgeInsets.all(10),
+                      ),
+                      Container(
+                        width: 250,
+                        child: SignInButton(
+                          Buttons.Email,
+                          text: "Sign up with Google",
+                          onPressed: _submit,
+                        ),
+                        padding: EdgeInsets.all(10),
+                      ),
+                      Container(
+                        width: 250,
+                        child: SignInButton(
+                          Buttons.Google,
+                          text: "Sign up with Google",
+                          onPressed: _submit,
+                        ),
                         padding: EdgeInsets.all(10),
                       ),
                       Container(
@@ -84,9 +112,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: FlatButton(
                             onPressed: () =>
                                 Navigator.pushNamed(context, SignupScreen.id),
-                            child: Text("Go to Signup",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(Icons.app_registration),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text("Go to Signup",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18)),
+                              ],
+                            ),
                             color: Colors.blue),
                         padding: EdgeInsets.all(10),
                       ),

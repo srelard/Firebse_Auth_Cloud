@@ -81,9 +81,18 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 250,
                         child: FlatButton(
                             onPressed: _submit,
-                            child: Text("Sign Up",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(Icons.add_to_photos_outlined),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text("Sign up",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18)),
+                              ],
+                            ),
                             color: Colors.blue),
                         padding: EdgeInsets.all(10),
                       ),
@@ -91,9 +100,18 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 250,
                         child: FlatButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text("Go to Signup",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(Icons.login),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text("Go to login",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18)),
+                              ],
+                            ),
                             color: Colors.blue),
                         padding: EdgeInsets.all(10),
                       ),
