@@ -10,8 +10,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   Widget _getScreenId() {
-    return StreamBuilder<FirebaseUser>(
-      stream: FirebaseAuth.instance.onAuthStateChanged,
+    return StreamBuilder<User>(
+      //changed
+      stream: FirebaseAuth.instance.authStateChanges(), //changed
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
           return FeedScreen();
