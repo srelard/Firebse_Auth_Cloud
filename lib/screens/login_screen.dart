@@ -1,4 +1,5 @@
 import 'package:firebase_backend/screens/signup_screen.dart';
+import 'package:firebase_backend/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,8 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _submit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      print(_email);
-      print(_password);
+      AuthService.login(_email, _password);
       // Logging in the user w/ Firebase
     }
   }
