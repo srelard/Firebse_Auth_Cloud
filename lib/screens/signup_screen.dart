@@ -1,3 +1,4 @@
+import 'package:firebase_backend/config/config.dart';
 import 'package:firebase_backend/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -45,6 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                         child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: InputDecoration(labelText: "Name"),
                           validator: (input) => input.trim().isEmpty
                               ? "Please enter a valid name"
@@ -56,6 +58,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                         child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: InputDecoration(labelText: "E-Mail"),
                           validator: (input) => !input.contains("@")
                               ? "Please enter a valid E-Mail"
@@ -67,7 +70,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                         child: TextFormField(
-                          decoration: InputDecoration(labelText: "Password"),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          decoration: InputDecoration(
+                              labelText: "Password",
+                              hintText: "At least 6 characters"),
                           validator: (input) => input.length < 6
                               ? "Must be at least 6 characters"
                               : null,
@@ -76,30 +82,51 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: 250,
-                        child: SignInButtonBuilder(
-                          text: 'Sign in with Email',
-                          icon: Icons.email,
-                          onPressed: _submit,
-                          backgroundColor: Colors.black54,
-                        ),
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      ),
-                      Container(
-                        width: 250,
-                        child: SignInButtonBuilder(
-                          text: 'Go back to Login',
-                          icon: Icons.login,
-                          onPressed: () => Navigator.pop(context),
-                          backgroundColor: Colors.black54,
-                        ),
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        height: 50,
                       ),
                     ],
-                  ))
+                  )),
+              Container(
+                width: 250,
+                child: RaisedButton(
+                  elevation: 2,
+                  onPressed: _submit,
+                  color: Palette.buttons,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    //side: BorderSide(color: Colors.blue),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Sign up",
+                          style: TextStyle(
+                              color: Palette.buttonText, fontSize: 14)),
+                    ],
+                  ),
+                ),
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                width: 250,
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
+                        "Back to Login",
+                        style: TextStyle(color: Colors.blueGrey, fontSize: 14),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
             ],
           ),
         ),
