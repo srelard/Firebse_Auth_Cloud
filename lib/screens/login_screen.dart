@@ -1,5 +1,6 @@
 import 'package:firebase_backend/screens/signup_screen.dart';
 import 'package:firebase_backend/services/auth_service.dart';
+import 'package:firebase_backend/widgets/signin_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
@@ -11,6 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final String assetName = 'assets/images/google.svg';
   final _formKey = GlobalKey<FormState>();
   String _email, _password;
 
@@ -72,60 +74,68 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Container(
                         width: 250,
-                        child: FlatButton(
-                            onPressed: _submit,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(Icons.email),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text("Login with Mail",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
-                              ],
-                            ),
-                            color: Colors.blue),
-                        padding: EdgeInsets.all(10),
+                        child: SignInButtonBuilder(
+                          text: 'Sign in with Email',
+                          icon: Icons.email,
+                          onPressed: _submit,
+                          backgroundColor: Colors.black54,
+                        ),
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                       ),
                       Container(
                         width: 250,
-                        child: SignInButton(
-                          Buttons.Email,
-                          text: "Sign up with Google",
-                          onPressed: _submit,
+                        child: SignInButtonBuilder(
+                          text: 'Register with Email',
+                          icon: Icons.app_registration,
+                          onPressed: () =>
+                              Navigator.pushNamed(context, SignupScreen.id),
+                          backgroundColor: Colors.black54,
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: Divider(
+                                height: 40,
+                                thickness: 1,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Text("Already have account?"),
+                            ),
+                            Expanded(
+                              child: Divider(
+                                height: 40,
+                                thickness: 1,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Container(
                         width: 250,
                         child: SignInButton(
                           Buttons.Google,
-                          text: "Sign up with Google",
-                          onPressed: _submit,
+                          text: 'Sign in with Google',
+                          onPressed: () => "Google",
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       ),
                       Container(
                         width: 250,
-                        child: FlatButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, SignupScreen.id),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(Icons.app_registration),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text("Go to Signup",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
-                              ],
-                            ),
-                            color: Colors.blue),
-                        padding: EdgeInsets.all(10),
+                        child: SignInButton(
+                          Buttons.AppleDark,
+                          text: 'Sign in with Apple ID',
+                          onPressed: () => "Google",
+                        ),
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       ),
                     ],
                   ))

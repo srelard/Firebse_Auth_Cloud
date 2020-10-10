@@ -1,5 +1,6 @@
 import 'package:firebase_backend/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class SignupScreen extends StatefulWidget {
   static final String id = "signup_screen";
@@ -79,41 +80,23 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       Container(
                         width: 250,
-                        child: FlatButton(
-                            onPressed: _submit,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(Icons.add_to_photos_outlined),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text("Sign up",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
-                              ],
-                            ),
-                            color: Colors.blue),
-                        padding: EdgeInsets.all(10),
+                        child: SignInButtonBuilder(
+                          text: 'Sign in with Email',
+                          icon: Icons.email,
+                          onPressed: _submit,
+                          backgroundColor: Colors.black54,
+                        ),
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                       ),
                       Container(
                         width: 250,
-                        child: FlatButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(Icons.login),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text("Go to login",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18)),
-                              ],
-                            ),
-                            color: Colors.blue),
-                        padding: EdgeInsets.all(10),
+                        child: SignInButtonBuilder(
+                          text: 'Go back to Login',
+                          icon: Icons.login,
+                          onPressed: () => Navigator.pop(context),
+                          backgroundColor: Colors.black54,
+                        ),
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       ),
                     ],
                   ))
