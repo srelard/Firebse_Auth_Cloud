@@ -4,6 +4,7 @@ import 'package:firebase_backend/widgets/signin_buttons.dart';
 import 'package:firebase_backend/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = "login_screen";
@@ -88,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 width: 250,
                 child: RaisedButton(
-                  onPressed: () => _submit(),
+                  onPressed: _submit,
                   color: Palette.buttons,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -167,9 +168,23 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Container(
                 width: 250,
+                child: GoogleSignInButton(
+                  borderRadius: 10,
+                  splashColor: Colors.white,
+                  onPressed: () {},
+                  textStyle: TextStyle(
+                    fontSize: 14,
+                    //fontWeight: FontWeight.w700,
+                    //fontFamily: "Roboto",
+                  ),
+                ),
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              ),
+              Container(
+                width: 250,
                 child: SignInButton(
                   Buttons.Apple,
-                  text: 'Sign in with Apple ID',
+                  text: 'Sign in with Apple',
                   onPressed: () => "Google",
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),

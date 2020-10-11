@@ -19,7 +19,9 @@ class MyApp extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(), //changed
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
-          return FeedScreen();
+          return HomeScreen(
+            userID: snapshot.data.uid,
+          );
         } else {
           return LoginScreen();
         }
@@ -32,6 +34,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Places nearby Backend',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          primaryIconTheme:
+              Theme.of(context).primaryIconTheme.copyWith(color: Colors.black)),
       home: AnimatedSplashScreen(
         splash: Image.asset(
           "assets/images/splash.png",
