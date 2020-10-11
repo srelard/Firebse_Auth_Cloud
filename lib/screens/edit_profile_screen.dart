@@ -62,7 +62,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _formKey.currentState.save();
       // Update User in DB
       String _profileImageUrl = "";
-      if (_profileImageUrl = null) {
+      if (_profileImageUrl == null) {
         _profileImageUrl = widget.user.profileImageUrl;
       } else {
         _profileImageUrl = await StorageService.uploadUserProfileImage(
@@ -109,7 +109,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     backgroundImage: _displayProfileImage(),
                   ),
                   FlatButton(
-                    onPressed: () => _handleImageFromGallery,
+                    onPressed: _handleImageFromGallery,
                     child: Text(
                       "Change Image",
                       style: TextStyle(
