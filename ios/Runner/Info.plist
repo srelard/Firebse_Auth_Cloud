@@ -40,6 +40,10 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Post and share photos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Post and share photos</string>
 	<false/>
 </dict>
 </plist>

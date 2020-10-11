@@ -21,8 +21,9 @@ class AuthService {
           "name": name,
           "email": email,
           "profileImageUrl": "",
+          "bio": "Please describe yourself here.",
         });
-        Navigator.pushReplacementNamed(context, FeedScreen.id);
+        Navigator.pop(context);
       }
     } catch (e) {
       print(e);

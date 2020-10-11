@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_backend/config/config.dart';
 import 'package:firebase_backend/models/user_model.dart';
 import 'package:firebase_backend/screens/screens.dart';
@@ -13,6 +14,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  User _profileUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     CircleAvatar(
                       radius: 50.0,
                       backgroundColor: Colors.grey,
-                      backgroundImage:
-                          NetworkImage("https://i.redd.it/dmdqlcdpjlwz.jpg"),
+                      backgroundImage: user.profileImageUrl.isEmpty
+                          ? AssetImage("assets/images/empty_avatar_men.png")
+                          : CachedNetworkImageProvider(user.profileImageUrl),
                     ),
                     Expanded(
                       child: Column(
@@ -104,6 +107,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       MaterialPageRoute(
                                         builder: (_) => EditProfileScreen(
                                           user: user,
+                                          updateUser: (User updateUser) {
+                                            // Trigger state rebuild after editing profile
+                                            User updatedUser = User(
+                                              id: updateUser.id,
+                                              name: updateUser.name,
+                                              email: user.email,
+                                              profileImageUrl:
+                                                  updateUser.profileImageUrl,
+                                              bio: updateUser.bio,
+                                            );
+                                            setState(() =>
+                                                _profileUser = updatedUser);
+                                          },
                                         ),
                                       ),
                                     ),
