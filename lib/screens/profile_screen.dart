@@ -3,6 +3,7 @@ import 'package:firebase_backend/config/config.dart';
 import 'package:firebase_backend/models/user_model.dart';
 import 'package:firebase_backend/screens/screens.dart';
 import 'package:firebase_backend/utilities/constants.dart';
+import 'package:firebase_backend/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(),
       backgroundColor: Palette.appBackground,
       body: FutureBuilder(
         future: usersRef.doc(widget.userID).get(),

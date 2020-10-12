@@ -1,13 +1,12 @@
 import 'package:firebase_backend/config/config.dart';
+import 'package:firebase_backend/models/user_data.dart';
 import 'package:firebase_backend/screens/feed_screen.dart';
 import 'package:firebase_backend/screens/screens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String userID;
-  HomeScreen({this.userID});
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -25,15 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Palette.appBar,
-        title: Text(
-          "Places Near You",
-          style: TextStyle(
-              color: Colors.black, fontFamily: "Billabong", fontSize: 35),
-        ),
-      ),
       body: PageView(
         controller: _pageController,
         children: <Widget>[
@@ -42,8 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
           CreatePostScreen(),
           ActivityScreen(),
           ProfileScreen(
-            userID: widget.userID,
-          ),
+              userID:
+                  Provider.of<UserData>(context, listen: false).currentUserId),
         ],
         onPageChanged: (int index) {
           setState(() {

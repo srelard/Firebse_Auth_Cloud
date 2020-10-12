@@ -6,6 +6,7 @@ import 'package:firebase_backend/models/user_model.dart';
 import 'package:firebase_backend/services/database_service.dart';
 import 'package:firebase_backend/services/storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _name = "";
   String _bio = "";
   final _picker = ImagePicker(); //added
+  bool _isLoading = false;
 
   @override
   initState() {
@@ -34,10 +36,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   _handleImageFromGallery() async {
     PickedFile image = await _picker.getImage(source: ImageSource.gallery);
     if (image != null) {
+      File imageTmp = await _cropImage(File(image.path));
       setState(() {
-        _profileImage = File(image.path);
+        _profileImage = imageTmp;
       });
     }
+  }
+
+  _cropImage(File imageFile) async {
+    File croppedImage = await ImageCropper.cropImage(
+      sourcePath: imageFile.path,
+      aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      androidUiSettings: AndroidUiSettings(
+          toolbarColor: Colors.black,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          activeControlsWidgetColor: Colors.white,
+          lockAspectRatio: false),
+    );
+    return croppedImage;
   }
 
   _displayProfileImage() {
@@ -60,8 +77,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   _submit() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+
+      setState(() {
+        _isLoading = true;
+      });
+
       // Update User in DB
       String _profileImageUrl = "";
+
       if (_profileImageUrl == null) {
         _profileImageUrl = widget.user.profileImageUrl;
       } else {
@@ -94,70 +117,78 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: _displayProfileImage(),
-                  ),
-                  FlatButton(
-                    onPressed: _handleImageFromGallery,
-                    child: Text(
-                      "Change Image",
-                      style: TextStyle(
-                          color: Theme.of(context).accentColor, fontSize: 16),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: ListView(
+          children: <Widget>[
+            _isLoading
+                ? LinearProgressIndicator(
+                    backgroundColor: Colors.blue[200],
+                    valueColor: AlwaysStoppedAnimation(Colors.blue),
+                  )
+                : SizedBox.shrink(),
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey,
+                      backgroundImage: _displayProfileImage(),
                     ),
-                  ),
-                  TextFormField(
-                    initialValue: _name,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.person, size: 30),
-                      labelText: "Name",
-                    ),
-                    validator: (input) => input.trim().length < 1
-                        ? "Please enter a valid name"
-                        : null,
-                    onSaved: (input) => _name = input,
-                  ),
-                  TextFormField(
-                    initialValue: _bio,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.book, size: 30),
-                      labelText: "Bio",
-                    ),
-                    validator: (input) => input.trim().length > 150
-                        ? "Please enter a bio less than 150 characters"
-                        : null,
-                    onSaved: (input) => _bio = input,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(40),
-                    height: 40,
-                    width: 250,
-                    child: FlatButton(
-                      onPressed: _submit,
-                      color: Colors.blue,
-                      textColor: Colors.white,
+                    FlatButton(
+                      onPressed: _handleImageFromGallery,
                       child: Text(
-                        "Save Profile",
-                        style: TextStyle(fontSize: 18),
+                        "Change Image",
+                        style: TextStyle(
+                            color: Theme.of(context).accentColor, fontSize: 16),
                       ),
                     ),
-                  )
-                ],
+                    TextFormField(
+                      initialValue: _name,
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.person, size: 30),
+                        labelText: "Name",
+                      ),
+                      validator: (input) => input.trim().length < 1
+                          ? "Please enter a valid name"
+                          : null,
+                      onSaved: (input) => _name = input,
+                    ),
+                    TextFormField(
+                      initialValue: _bio,
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.book, size: 30),
+                        labelText: "Bio",
+                      ),
+                      validator: (input) => input.trim().length > 150
+                          ? "Please enter a bio less than 150 characters"
+                          : null,
+                      onSaved: (input) => _bio = input,
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(40),
+                      height: 40,
+                      width: 250,
+                      child: FlatButton(
+                        onPressed: _submit,
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        child: Text(
+                          "Save Profile",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

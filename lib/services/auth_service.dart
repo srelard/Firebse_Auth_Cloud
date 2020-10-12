@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_backend/models/user_data.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../screens/feed_screen.dart';
 import '../screens/login_screen.dart';
 
@@ -23,6 +25,8 @@ class AuthService {
           "profileImageUrl": "",
           "bio": "Please describe yourself here.",
         });
+        Provider.of<UserData>(context, listen: false).currentUserId =
+            signedInUser.uid;
         Navigator.pop(context);
       }
     } catch (e) {
