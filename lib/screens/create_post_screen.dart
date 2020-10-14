@@ -1,10 +1,17 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_backend/config/config.dart';
+import 'package:firebase_backend/models/post_model.dart';
+import 'package:firebase_backend/models/user_data.dart';
+import 'package:firebase_backend/services/database_service.dart';
+import 'package:firebase_backend/services/storage_service.dart';
 import 'package:firebase_backend/widgets/app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override
@@ -12,6 +19,12 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
+  final _picker = ImagePicker(); //added
+  File _image;
+  TextEditingController _captionController = TextEditingController();
+  String _caption = "";
+  bool _isLoading = false;
+
   _showSelectImageDialog() {
     return Platform.isIOS ? _iosBottomSheet() : _androidDialog();
   }
@@ -50,11 +63,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           children: <Widget>[
             SimpleDialogOption(
               child: Text('Take Photo'),
-              onPressed: () => print("_handleImage(ImageSource.camera)"),
+              onPressed: () => _handleImage(ImageSource.camera),
             ),
             SimpleDialogOption(
               child: Text('Choose From Gallery'),
-              onPressed: () => print("_handleImage(ImageSource.gallery)"),
+              onPressed: () => _handleImage(ImageSource.gallery),
             ),
             SimpleDialogOption(
               child: Text(
@@ -69,6 +82,58 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         );
       },
     );
+  }
+
+  _handleImage(ImageSource source) async {
+    Navigator.pop(context);
+    PickedFile imageFile = await _picker.getImage(source: source);
+    if (imageFile != null) {
+      File imageTmp = await _cropImage(File(imageFile.path));
+      setState(() {
+        _image = imageTmp;
+      });
+    }
+  }
+
+  _cropImage(File imageFile) async {
+    File croppedImage = await ImageCropper.cropImage(
+      sourcePath: imageFile.path,
+      aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      androidUiSettings: AndroidUiSettings(
+          toolbarColor: Colors.black,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          activeControlsWidgetColor: Colors.white,
+          lockAspectRatio: false),
+    );
+    return croppedImage;
+  }
+
+  _submit() async {
+    if (!_isLoading && _image != null && _caption.isNotEmpty) {
+      setState(() {
+        _isLoading = true;
+      });
+      //create post
+      String imageUrl = await StorageService.uploadPost(_image);
+      Post post = Post(
+        imageUrl: imageUrl,
+        caption: _caption,
+        likes: {},
+        authorId: Provider.of<UserData>(context, listen: false).currentUserId,
+        timestamp: Timestamp.fromDate(DateTime.now()),
+      );
+      DatabaseService.createPost(post);
+
+      //reset Data
+      _captionController.clear();
+
+      setState(() {
+        _caption = "";
+        _image = null;
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -86,21 +151,53 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ),
         ),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.add), onPressed: () => print("Add"))
+          IconButton(icon: Icon(Icons.add), onPressed: _submit)
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          GestureDetector(
-            onTap: _showSelectImageDialog,
-            child: Container(
-                height: width,
-                width: width,
-                color: Colors.grey[300],
-                child:
-                    Icon(Icons.add_a_photo, color: Colors.white70, size: 150)),
-          )
-        ],
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Container(
+            height: height,
+            child: Column(
+              children: <Widget>[
+                _isLoading
+                    ? Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: LinearProgressIndicator(
+                          backgroundColor: Colors.blue[200],
+                          valueColor: AlwaysStoppedAnimation(Colors.blue),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                GestureDetector(
+                  onTap: _showSelectImageDialog,
+                  child: Container(
+                      height: width,
+                      width: width,
+                      color: Colors.grey[300],
+                      child: _image == null
+                          ? Icon(Icons.add_a_photo,
+                              color: Colors.white70, size: 150)
+                          : Image(
+                              image: FileImage(_image),
+                              fit: BoxFit.cover,
+                            )),
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: TextField(
+                    controller: _captionController,
+                    style: TextStyle(fontSize: 18),
+                    decoration: InputDecoration(labelText: "Caption"),
+                    onChanged: (input) => _caption = input,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
