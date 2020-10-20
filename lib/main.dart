@@ -45,16 +45,71 @@ class MyApp extends StatelessWidget {
             primaryIconTheme: Theme.of(context)
                 .primaryIconTheme
                 .copyWith(color: Colors.black)),
-        home: AnimatedSplashScreen(
-          splash: Image.asset(
-            "assets/images/splash.png",
+        home: Material(
+          child: Container(
+              color: Color(0xffff9e92),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("KEEKZ.",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                      )),
+                  Lottie.asset(
+                    'assets/lottie/world-locations.json',
+                    //fit: BoxFit.fill,
+                  ),
+                  Text("we are just getting you spots in place...",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      )),
+                ],
+              )),
+        ),
+
+        /* AnimatedSplashScreen(
+          splash: Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Colors.black,
+            child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Keekks.",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                          )),
+                      Expanded(
+                          child: Lottie.asset(
+                        'assets/lottie/world-locations.json',
+                        fit: BoxFit.fill,
+                      )),
+                      Text("we are just getting you spots in place...",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          )),
+                    ],
+                  ),
+                ]),
           ),
           nextScreen: _getScreenId(),
           splashTransition: SplashTransition.scaleTransition,
           backgroundColor: Colors.black,
-          duration: 3000,
+          duration: 4000000,
           pageTransitionType: PageTransitionType.bottomToTop,
-        ),
+        ), */
         routes: {
           LoginScreen.id: (context) => LoginScreen(),
           SignupScreen.id: (context) => SignupScreen(),
