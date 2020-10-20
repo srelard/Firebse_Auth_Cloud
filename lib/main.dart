@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
